@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useRef, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
-import io from 'socket.io-client'
+//import io from 'socket.io-client'
+import {io, Socket} from 'socket.io-client';
 import Card, { Listing } from './components/card/card';
 import ConnectedUsers from './components/connectedUsers/ConnectedUsers';
 import EnterUsername from './components/EnterUsername';
@@ -33,10 +34,12 @@ const App = () => {
   const [messages, setMessages] = useState([] as {message: string, username: string}[]);
   const [message, setMessage] = useState("");
 
-  const socketClient = useRef<SocketIOClient.Socket>();
+  //const socketClient = useRef<SocketIOClient.Socket>();
+  const socketClient = useRef<Socket>();
 
   useEffect(() => {
-    socketClient.current = io.connect("http://localhost:5000");
+    //socketClient.current = io.connect("http://localhost:5000");
+    socketClient.current = io("http://localhost:5000");
 
     if(socketClient.current){
       socketClient.current.on("username-submitted-successfully", () => {
@@ -62,9 +65,9 @@ const App = () => {
     };
   }, [username])
 
-  const handleConnection = (listingId:string ) => {
+  const handleConnection = (listingId:string, userId:string ) => {
     if(socketClient.current){
-      socketClient.current.emit("handle-connection", listingId); 
+      socketClient.current.emit("handle-connection", listingId, userId); 
     }
   }
 
@@ -76,9 +79,9 @@ const App = () => {
     }
   }
 
-  const handleOnGetInContact = (listingId:string) => {
+  const handleOnGetInContact = (listingId:string, userId:string) => {
     alert("contactar el listing " + listingId );
-    handleConnection(listingId);
+    handleConnection(listingId, userId);
   }
 
   return (

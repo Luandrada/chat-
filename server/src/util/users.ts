@@ -1,13 +1,13 @@
-let users: {id: string, username: string}[] = []
+let users: { id: string, userId: string }[] = []
 
-export const userJoin = (id: string, username: string): boolean => {
-    let user = users.find(user => user.username === username);
+export const userJoin = (id: string, listing_id: string, userId: string): boolean => {
+    let user = users.find(user => user.userId === userId);
 
-    if(user){
+    if (user) {
         return false;
     }
 
-    users.push({id, username});
+    users.push({ id, userId });
 
     return true;
 }
