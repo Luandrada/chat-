@@ -8,6 +8,37 @@ import ConnectedUsers from './components/connectedUsers/ConnectedUsers';
 import EnterUsername from './components/EnterUsername';
 import Messages from './components/messages/Messages';
 
+const chatsInfo = [
+  {
+    userIdFrom: 'UserFrom1',
+    userIdTo:'UserTo1',
+    listingId:'a1',
+    mensaje: {
+      mensaje:'hola como estas',
+      seen: true,
+    }
+
+  },
+  {
+    userIdFrom: 'UserFrom1',
+    userIdTo:'UserTo2',
+    listingId:'a2',
+    mensaje: {
+      mensaje:'hola USer 2 como estas',
+      seen: false,
+    }
+  },
+  {
+    userIdFrom: 'UserFrom1',
+    userIdTo:'UserTo3',
+    listingId:'a3',
+    mensaje: {
+      mensaje:'hola',
+      seen: true,
+    }
+  },
+]
+
 const cardsInfo: Listing[] = [
   {
     title: "Listing 1",
@@ -32,7 +63,8 @@ const App = () => {
   const [listingId, setListingId] = useState("");
   const [userId, setUserId] = useState("");
 
-  const [connected, setConnected] = useState(false) // set en false 
+  const [connected, setConnected] = useState(false) 
+  const [showChat, setShowChat] = useState(true) 
   const [messages, setMessages] = useState([] as {message: string, userId: string}[]);
   const [message, setMessage] = useState("");
 
@@ -118,19 +150,33 @@ const App = () => {
         connected && 
         <>
           <div style={{position:'absolute', bottom:'0', right:'15px', width:'220px', height:'300px', border:'1px solid grey'}}>
-            <div style={{height:'80%', width:'100%'}}>
-              {
-                messages?.map((msg) => (
-                  <div style={{width:'110px',backgroundColor:'blue', borderRadius:'7px', padding:'10px'}}>
-                    <p style={{color:'white'}}>De: {msg.userId}</p>
-                    <p style={{color:'white'}}>{msg.message}</p>
-                  </div>
-                ))
-              }
+          {
+        showChat && 
+            <div style={{height:'100%', width:'100%'}}>
+                  <div style={{height:'80%', width:'100%'}}>
+                    <p onClick={() => setShowChat(false)}>back</p>
+                    {
+                      messages?.map((msg) => (
+                        <div style={{width:'110px',backgroundColor:'blue', borderRadius:'7px', padding:'10px'}}>
+                          <p style={{color:'white'}}>De: {msg.userId}</p>
+                          <p style={{color:'white'}}>{msg.message}</p>
+                        </div>
+                      ))
+                    }
 
+                  </div>
+                  <input type="text" placeholder='my messagge' onChange={(event)=>handleChangesOnMsg(event)} />
+                  <button style={{backgroundColor: "cyan", borderRadius:'5px', paddingInline:'10px'}} onClick={handleSendMenssage}>Send</button>
+                </div>}
+
+          {chatsInfo?.map((chat) => (
+            <div key={chat.listingId}  style={{height:'50px', width:'100%', border:'1px solid black', padding:'5px', marginBottom:'3px', backgroundColor:'#f3f3f3'}} onClick={()=> setShowChat(true)} >
+              <p>{chat.userIdTo}</p>
+              <p>{chat.mensaje.mensaje}</p>
             </div>
-            <input type="text" placeholder='my messagge' onChange={(event)=>handleChangesOnMsg(event)} />
-            <button style={{backgroundColor: "cyan", borderRadius:'5px', paddingInline:'10px'}} onClick={handleSendMenssage}>Send</button>
+            ))}
+            
+            
           </div>
         </>
       }
