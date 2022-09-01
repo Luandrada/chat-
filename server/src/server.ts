@@ -14,11 +14,12 @@ io.on("connection", socket => {
     socket.on("handle-connection", (listing_id: string, user: string) => {
         const channel: string = listing_id;
         socket.join(channel);
+        console.info(channel, user)
         if (!userJoin(socket.id, channel, user)) {
             console.info(channel, user)
-            socket.emit("username-taken")
+            socket.emit("room-already-exist")
         } else {
-            socket.emit("username-submitted-successfully")
+            socket.emit("room-created-successfully")
             io.to(channel).emit("get-connected-users", getUsers());
         }
     });
