@@ -9,9 +9,11 @@ const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: "http://localhost:3000" } });
 
 io.on("connection", socket => {
-    socket.join("myChat");
+    socket.join("MyChat");
 
     socket.on("handle-connection", (listing_id: string, user: string) => {
+        console.log(listing_id);
+        
         const channel: string = listing_id;
         socket.join(channel);
         console.info(channel, user)
@@ -24,8 +26,10 @@ io.on("connection", socket => {
         }
     });
 
-    socket.on("message", (message: { listing_id: string, message: string; username: string }) => {
-        const channel: string = message.listing_id;
+    socket.on("message", (message: { listingId: string, message: string; userId: string }) => {
+        const channel: string = message.listingId;
+        console.log("CANAL" , channel);
+        
         socket.broadcast.to(channel).emit("receive-message", message);
     })
 

@@ -40,7 +40,7 @@ const App = () => {
   // const socketClient = useRef<Socket>();
 
   useEffect(() => {
-    socketClient.current = io.connect("http://localhost:5000");
+    socketClient.current = io.connect("http://localhost:5000"); // cuando inici sesion 
     // socketClient.current = io("http://localhost:5000");
 
     if(socketClient.current){
@@ -53,7 +53,9 @@ const App = () => {
       })
   
       socketClient.current.on("get-connected-users", (connectedUsers: {id: string, username: string}[]) => {
+        console.log(connectedUsers);
         setConnectedUsers(connectedUsers.filter(user => user.username !== username));
+        
       })
 
       socketClient.current.on("receive-message", (message: {message: string; userId: string}) => {
@@ -82,10 +84,9 @@ const App = () => {
     }
   }
 
-  const handleOnGetInContact = (listingId:string, userId:string) => {
+  const handleOnGetInContact = (listingId:string) => {
     alert("contactar el listing " + listingId );
     setListingId(listingId);
-    setUserId(userId)
     handleConnection(listingId, userId);
   }
 
@@ -93,8 +94,15 @@ const App = () => {
     setMessage(e.target.value)
   }
 
+  const handleInicioDeSesion = (e:any) => {
+    setUserId(e.target.value)
+  }
+
   return (
     <div className="app">
+      <input type="text" placeholder='my user ID' onChange={(event)=>handleInicioDeSesion(event)}/>
+
+
       <div style={{display:'flex', justifyContent:'space-around', alignItems:'center', width:'100%', paddingTop:'50px'}}>
         {cardsInfo?.map((listing) => (
           <div key={listing.id} >
