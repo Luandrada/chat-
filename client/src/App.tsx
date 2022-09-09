@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import io from 'socket.io-client'
-// import {Socket} from 'socket.io-client';
+import {Socket} from 'socket.io-client';
 import Card, { Listing } from './components/card/card';
 import ConnectedUsers from './components/connectedUsers/ConnectedUsers';
 import EnterUsername from './components/EnterUsername';
@@ -42,18 +42,18 @@ const chatsInfo = [
 const cardsInfo: Listing[] = [
   {
     title: "Listing 1",
-    id:"a1",
-    userId: "user1"
+    id:2,
+    userId: "4cf729f8-724a-475e-8206-0930aa6168d2"
   },
   {
     title: "Listing 2",
-    id:"a2",
-    userId: "user2"
+    id:5,
+    userId: "9387a7d1-4bcb-4041-91c1-b9619190d344"
   },
   {
     title: "Listing 3",
-    id:"a3",
-    userId: "user1"
+    id:7,
+    userId: "99d76b56-fcf7-42a1-a103-bebcda803ce5"
   },
 ]
 
@@ -68,12 +68,12 @@ const App = () => {
   const [messages, setMessages] = useState([] as {message: string, userId: string}[]);
   const [message, setMessage] = useState("");
 
-  const socketClient = useRef<SocketIOClient.Socket>();
-  // const socketClient = useRef<Socket>();
+  //const socketClient = useRef<SocketIOClient.Socket>();
+  const socketClient = useRef<Socket>();
 
   useEffect(() => {
-    socketClient.current = io.connect("http://localhost:5000"); // cuando inici sesion 
-    // socketClient.current = io("http://localhost:5000");
+    //socketClient.current = io.connect("http://localhost:5000"); // cuando inici sesion 
+    socketClient.current = io("http://localhost:5001");
 
     if(socketClient.current){
       socketClient.current.on("room-created-successfully", () => {

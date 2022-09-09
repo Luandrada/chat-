@@ -2,7 +2,7 @@ import React from 'react'
 
 export interface Listing {
     title: string,
-    id: string,
+    id: string | number,
     userId: string,
 }
 interface CardProps {
